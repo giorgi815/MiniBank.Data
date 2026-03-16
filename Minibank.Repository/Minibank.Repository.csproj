@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AccountRepository\AccountRepository.csproj" />
     <ProjectReference Include="..\MiniBank.Data\MiniBank.Data.csproj" />
   </ItemGroup>
 

@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Account.Data\Account.Data.csproj" />
+    <ProjectReference Include="..\MiniBank.Data\MiniBank.Data.csproj" />
   </ItemGroup>
 
 </Project>

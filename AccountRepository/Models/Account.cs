@@ -1,16 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace AccountRepository.Models
 {
-    internal class Account
+    public class Account
     {
+        [JsonPropertyName("Id")]
         public int Id { get; set; }
-        public string AccountNumber { get; set; }
-        public int CustomerId { get; set; }
+
+        [JsonPropertyName("Iban")]
+        public string Iban { get; set; }
+
+        [JsonPropertyName("Currency")]
+        public string Currency { get; set; }
+
+        [JsonPropertyName("Balance")]
         public decimal Balance { get; set; }
-        public string AccountType { get; set; }
+
+        [JsonPropertyName("CustomerId")]
+        public int CustomerId { get; set; }
+
+        [JsonPropertyName("Name")]
+        public string Name { get; set; }
 
     }
 }

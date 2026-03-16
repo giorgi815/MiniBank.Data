@@ -2,12 +2,14 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace AccountRepository.Repositories
 {
-    internal class AccountRepository
+    public class AccountRepository
     {
-        private const string _filePath = @"../../../../Account.csv";
+        private const string _filePath = "C:\\Users\\gioch\\source\\repos\\MiniBank.Data\\Account.Data\\Accounts.json";
         private readonly List<Account> _accounts;
         public AccountRepository()
         {
@@ -24,9 +26,8 @@ namespace AccountRepository.Repositories
 
             _accounts.Add(newAccount);
 
-            string newCsvLine = $"\n{newAccount.Id},{newAccount.AccountNumber},{newAccount.CustomerId},{newAccount.Balance},{newAccount.AccountType}";
 
-            File.AppendAllText(_filePath, newCsvLine);
+            SaveData();
 
             return newId;
 
@@ -55,62 +56,43 @@ namespace AccountRepository.Repositories
         }
 
 
+        public int UpdateAccount(Account UpdateAccount)
+        {
+            var accounts = _accounts.FirstOrDefault(x => x.Id == UpdateAccount.Id);
+
+            if (accounts == null)
+                throw new Exception("Account not found");
+
+            SaveData();
+
+
+            return 1;
+        }
+
+
+
         #region HELPERS
 
         private static List<Account> LoadAccountData(string filePath)
         {
-            var accounts = new List<Account>();
 
             if (!File.Exists(filePath))
-                return accounts;
+                return new List<Account>();
 
-            var lines = File.ReadAllLines(filePath);
-
-            foreach (var line in lines.Skip(1))
-            {
-                if (string.IsNullOrWhiteSpace(line))
-                    continue;
-
-                var account = FromCsv(line);
-                if (account != null)
-                    accounts.Add(account);
-
-
-            }
-
-            return accounts;
-        }
-
-
-        private static Account FromCsv(string line)
-        {
-            var part = line.Split(',', StringSplitOptions.RemoveEmptyEntries);
-
-            if (part.Length != 5)
-                throw new FormatException("Customer format is invalid");
-
-            return new Account()
-            {
-                Id = int.Parse(part[0]),
-                AccountNumber = part[1],
-                CustomerId = int.Parse(part[2]),
-                Balance = decimal.Parse(part[3]),
-                AccountType = part[4]
-            };
+            var json = File.ReadAllText(filePath);
+            return JsonSerializer.Deserialize<List<Account>>(json) ?? new List<Account>();
 
         }
+
+
+
 
 
         private void SaveData()
         {
-            string header = "Id,AccountNumber,CustomerId,Balance,AccountType";
-
-            var lines = new List<string> { header };
-
-            lines.AddRange(_accounts.Select(x => $"{x.Id},{x.AccountNumber},{x.CustomerId},{x.Balance},{x.AccountType}"));
-
-            File.WriteAllLines(_filePath, lines);
-
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            var json = JsonSerializer.Serialize(_accounts, options);
+            File.WriteAllText(_filePath, json);
         }
 
 

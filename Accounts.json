@@ -1,0 +1,18 @@
+[
+  {
+    "Id": 1,
+    "Iban": "GE94SB5621487456325148",
+    "Currency": "gel",
+    "Balance": 1000,
+    "CustomerId": 1,
+    "Name": "random"
+  },
+  {
+    "Id": 2,
+    "Iban": "GE94SB5621487456325148",
+    "Currency": "gel",
+    "Balance": 1000,
+    "CustomerId": 1,
+    "Name": "random"
+  }
+]

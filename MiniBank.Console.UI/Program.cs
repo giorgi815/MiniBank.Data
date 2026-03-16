@@ -1,5 +1,8 @@
-﻿using Minibank.Repository;
+﻿using AccountRepository.Models;
+using AccountRepository.Models;
+using Minibank.Repository;
 using Minibank.Repository.Models;
+using AccountRepository.Repositories;
 
 namespace MiniBank.Console.UI
 {
@@ -10,6 +13,28 @@ namespace MiniBank.Console.UI
             CustomerRepository customerRepository = new CustomerRepository();
             var singleCustomer = customerRepository.GetCustomer(9);
             var allCustomers = customerRepository.GetCustomers();
+            OperationRepository operationRepository = new OperationRepository();
+
+
+            var transfer = operationRepository.Transfer(30, 29, 100);
+
+
+            var repo = new AccountRepository.Repositories.AccountRepository();
+
+            //var account = new Account
+            //{
+            //    Balance = 1000,
+            //    CustomerId = 3,
+            //    Currency = "gel",
+            //    Id = 30,
+            //    Iban = "GE56589521475235541948",
+            //    Name = "personal"
+
+            //};
+
+            //repo.AddAccount(account);
+
+            //repo.DeleteAccount(31);
 
             //var addCustomer = customerRepository.AddCustomer(new Minibank.Repository.Models.Customer()
             //{

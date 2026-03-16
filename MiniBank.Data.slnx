@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="../../../OneDrive/Desktop/Accounts.json" />
+  </Folder>
   <Project Path="Account.Data/Account.Data.csproj" Id="d5fcb311-3592-4628-8093-d446a171dd5f" />
   <Project Path="AccountRepository/AccountRepository.csproj" Id="7f43da89-ea51-43ba-b474-0b6f9077ec7d" />
   <Project Path="MiniBank.Console.UI/MiniBank.Console.UI.csproj" Id="56acd090-d8b6-4390-b1e0-c45040d72a4b" />
