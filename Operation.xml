@@ -4,14 +4,14 @@
     <Id>1</Id>
     <AccountId>30</AccountId>
     <Amount>-100</Amount>
-    <HappenedAt>2026-03-22T15:25:44.7725727+04:00</HappenedAt>
+    <HappenedAt>2026-03-22T15:22:26.6797675+04:00</HappenedAt>
     <Type>debit</Type>
   </Operation>
   <Operation>
     <Id>1</Id>
     <AccountId>29</AccountId>
     <Amount>100</Amount>
-    <HappenedAt>2026-03-22T15:25:44.7726228+04:00</HappenedAt>
+    <HappenedAt>2026-03-22T15:22:26.6798561+04:00</HappenedAt>
     <Type>credit</Type>
   </Operation>
 </Operations>
