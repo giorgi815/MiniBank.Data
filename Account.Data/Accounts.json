@@ -227,7 +227,7 @@
     "Id": 29,
     "Iban": "GE45SB7712459832149845",
     "Currency": "GEL",
-    "Balance": 5100,
+    "Balance": 5700,
     "CustomerId": 3,
     "Name": null
   },
@@ -235,7 +235,7 @@
     "Id": 30,
     "Iban": "GE94SB5621487456325148",
     "Currency": "gel",
-    "Balance": 900,
+    "Balance": 1900,
     "CustomerId": 1,
     "Name": "random"
   }

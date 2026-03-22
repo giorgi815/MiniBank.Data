@@ -7,4 +7,5 @@
   <Project Path="MiniBank.Console.UI/MiniBank.Console.UI.csproj" Id="56acd090-d8b6-4390-b1e0-c45040d72a4b" />
   <Project Path="MiniBank.Data/MiniBank.Data.csproj" />
   <Project Path="Minibank.Repository/Minibank.Repository.csproj" />
+  <Project Path="MyValidators/MyValidators.csproj" Id="16be8806-edba-4015-80ab-5f8a4771a2e4" />
 </Solution>

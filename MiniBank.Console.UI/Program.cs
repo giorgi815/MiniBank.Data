@@ -1,5 +1,4 @@
 ﻿using AccountRepository.Models;
-using AccountRepository.Models;
 using Minibank.Repository;
 using Minibank.Repository.Models;
 using AccountRepository.Repositories;
@@ -19,7 +18,10 @@ namespace MiniBank.Console.UI
             var transfer = operationRepository.Transfer(30, 29, 100);
 
 
-            var repo = new AccountRepository.Repositories.AccountRepository();
+            //var repo = new AccountRepository.Repositories.AccountRepository();
+
+            //var deposit = operationRepository.Deposit(30, 2000);
+            //var withdraw = operationRepository.Withdraw(30, 400);
 
             //var account = new Account
             //{
