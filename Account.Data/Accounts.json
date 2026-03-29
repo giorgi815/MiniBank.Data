@@ -238,5 +238,13 @@
     "Balance": 1400,
     "CustomerId": 1,
     "Name": "random"
+  },
+  {
+    "Id": 31,
+    "Iban": "GE55SB7785625594124549",
+    "Currency": "EUR",
+    "Balance": 100000,
+    "CustomerId": 2,
+    "Name": "name1"
   }
 ]

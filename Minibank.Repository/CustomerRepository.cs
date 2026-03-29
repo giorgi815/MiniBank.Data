@@ -7,13 +7,21 @@ namespace Minibank.Repository
         private const string _filePath = @"../../../../MiniBank.Data/Customers.csv";
         private readonly List<Customer> _customers;
 
-        public CustomerRepository()
+        public CustomerRepository(List<Customer> customers)
         {
-            _customers = LoadData(_filePath);
+            _customers = customers;
+        }
+
+        public static async Task<CustomerRepository> CreateAsync(string filePath)
+        {
+
+            var customers = await LoadData(filePath);
+            return new CustomerRepository(customers);
+
         }
 
 
-        public int AddCustomer(Customer newCustomer)
+        public async Task<int> AddCustomer(Customer newCustomer)
         {
             if (newCustomer == null)
                 throw new ArgumentException(nameof(newCustomer));
@@ -24,9 +32,7 @@ namespace Minibank.Repository
 
             _customers.Add(newCustomer);
 
-            string newCsvLine = $"\n{newCustomer.Id},{newCustomer.Name},{newCustomer.IdentityNumber},{newCustomer.PhoneNumber},{newCustomer.Email},{newCustomer.CustomerType}";
-
-            File.AppendAllText(_filePath, newCsvLine);
+            await SaveData();
 
             return newId;
         }
@@ -36,7 +42,7 @@ namespace Minibank.Repository
         public List<Customer> GetCustomers() => _customers;
 
 
-        public int UpdateCustomer(Customer customer)
+        public async Task<int> UpdateCustomer(Customer customer)
         {
             if (customer == null)
                 throw new ArgumentException(nameof(customer));
@@ -53,12 +59,12 @@ namespace Minibank.Repository
             existingCustomer.Email = customer.Email;
             existingCustomer.CustomerType = customer.CustomerType;
 
-            SaveData();
+            await SaveData();
 
             return 1;
         }
 
-        public int DeleteCustomer(int id)
+        public async Task<int> DeleteCustomer(int id)
         {
             var customer = _customers.FirstOrDefault(c => c.Id == id);
 
@@ -66,7 +72,7 @@ namespace Minibank.Repository
                 return 0;
 
             _customers.Remove(customer);
-            SaveData();
+            await SaveData();
 
             return 1;
         }
@@ -74,16 +80,21 @@ namespace Minibank.Repository
 
         #region HELPERS
 
-        private static List<Customer> LoadData(string filePath)
+        private static async Task<List<Customer>> LoadData(string filePath)
         {
             var customers = new List<Customer>();
 
             if (!File.Exists(filePath))
                 return customers;
 
-            var lines = File.ReadAllLines(filePath);
+            using var reader = new StreamReader(filePath);
 
-            foreach (var line in lines.Skip(1))
+            await reader.ReadLineAsync();
+
+            string? line;
+
+
+            while ((line = await reader.ReadLineAsync()) != null)
             {
                 if (string.IsNullOrWhiteSpace(line))
                     continue;
@@ -114,7 +125,7 @@ namespace Minibank.Repository
 
         }
 
-        private void SaveData()
+        private async Task SaveData()
         {
             string header = "Id,Name,IdentityNumber,PhoneNumber,Email,CustomerType";
 
@@ -122,7 +133,7 @@ namespace Minibank.Repository
 
             lines.AddRange(_customers.Select(c => $"{c.Id},{c.Name},{c.IdentityNumber},{c.PhoneNumber},{c.Email},{c.CustomerType}"));
 
-            File.WriteAllLines(_filePath, lines);
+            await File.WriteAllLinesAsync(_filePath, lines);
 
         }
 

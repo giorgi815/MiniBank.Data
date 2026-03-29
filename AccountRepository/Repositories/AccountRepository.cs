@@ -11,12 +11,19 @@ namespace AccountRepository.Repositories
     {
         private const string _filePath = "C:\\Users\\gioch\\source\\repos\\MiniBank.Data\\Account.Data\\Accounts.json";
         private readonly List<Account> _accounts;
-        public AccountRepository()
+        public AccountRepository(List<Account> accounts)
         {
-            _accounts = LoadAccountData(_filePath);
+            _accounts = accounts;
         }
 
-        public int AddAccount(Account newAccount)
+        public static async Task<AccountRepository> CreateAsync()
+        {
+            var accounts = await LoadAccountData(_filePath);
+            return new AccountRepository(accounts);
+        }
+
+
+        public async Task<int> AddAccount(Account newAccount)
         {
             if (newAccount == null)
                 throw new ArgumentException(nameof(newAccount));
@@ -27,7 +34,7 @@ namespace AccountRepository.Repositories
             _accounts.Add(newAccount);
 
 
-            SaveData();
+            await SaveData();
 
             return newId;
 
@@ -41,7 +48,7 @@ namespace AccountRepository.Repositories
 
         public List<Account> GetAccounts() => _accounts;
 
-        public int DeleteAccount(int id)
+        public async Task<int> DeleteAccount(int id)
         {
             var account = _accounts.FirstOrDefault(x => x.Id == id);
 
@@ -49,21 +56,21 @@ namespace AccountRepository.Repositories
                 return 0;
 
             _accounts.Remove(account);
-            SaveData();
+            await SaveData();
 
             return 1;
 
         }
 
 
-        public int UpdateAccount(Account UpdateAccount)
+        public async Task<int> UpdateAccount(Account UpdateAccount)
         {
             var accounts = _accounts.FirstOrDefault(x => x.Id == UpdateAccount.Id);
 
             if (accounts == null)
                 throw new Exception("Account not found");
 
-            SaveData();
+            await SaveData();
 
 
             return 1;
@@ -73,14 +80,16 @@ namespace AccountRepository.Repositories
 
         #region HELPERS
 
-        private static List<Account> LoadAccountData(string filePath)
+        private static async Task<List<Account>> LoadAccountData(string filePath)
         {
 
             if (!File.Exists(filePath))
                 return new List<Account>();
 
-            var json = File.ReadAllText(filePath);
-            return JsonSerializer.Deserialize<List<Account>>(json) ?? new List<Account>();
+            using FileStream stream = File.OpenRead(filePath);
+            var data = await JsonSerializer.DeserializeAsync<List<Account>>(stream) ?? new List<Account>();
+
+            return data ?? new List<Account>();
 
         }
 
@@ -88,11 +97,15 @@ namespace AccountRepository.Repositories
 
 
 
-        private void SaveData()
+        private async Task SaveData()
         {
-            var options = new JsonSerializerOptions { WriteIndented = true };
-            var json = JsonSerializer.Serialize(_accounts, options);
-            File.WriteAllText(_filePath, json);
+            using FileStream stream = File.Create(_filePath);
+
+            await JsonSerializer.SerializeAsync(stream, _accounts, new JsonSerializerOptions
+            {
+                WriteIndented = true
+            });
+
         }
 
 

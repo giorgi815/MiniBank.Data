@@ -16,9 +16,9 @@ namespace Minibank.Repository
 
         //transfer, deposit, withdraw
 
-        public OperationRepository()
+        public OperationRepository(AccountRepository.Repositories.AccountRepository accountRepository)
         {
-            _accountRepository = new AccountRepository.Repositories.AccountRepository();
+            _accountRepository = accountRepository;
             _operation = LoadFromXml();
         }
 
